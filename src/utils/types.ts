@@ -6,6 +6,11 @@ export type CreateUserParams = {
   password: string;
 };
 
+export type LoginUserParams = {
+  email_address: string;
+  password: string;
+};
+
 export type UpdateUserParams = {
   first_name: string;
   last_name: string;

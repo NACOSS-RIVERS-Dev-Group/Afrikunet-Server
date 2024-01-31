@@ -7,11 +7,12 @@ import { encodePassword } from 'src/utils/bcrypt';
 import { CreateUserAddressParams, CreateUserGeoParams } from 'src/utils/types';
 import { Repository } from 'typeorm';
 import { CreateUserDTO } from './dtos/createuser.dto';
+import { LoginUserDTO } from './dtos/loginuser.dto';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Address) private addressRepository: Repository<Address>,
     @InjectRepository(Geo) private geoRepository: Repository<Geo>,
   ) {}
@@ -30,11 +31,21 @@ export class UserService {
     });
 
     this.userRepository.save(newUser);
+    return newUser;
   }
 
-  // updateUser(id: number, updateUserDetails: UpdateUserParams) {
+  async loginUser(loginUserDto: LoginUserDTO) {
+    const encodedPassword = await encodePassword(loginUserDto.password);
+    const newUser = this.userRepository.create({
+      ...loginUserDto,
+      password: encodedPassword,
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
 
-  // }
+    this.userRepository.save(newUser);
+    return newUser;
+  }
 
   async createUserAddress(
     id: number,
@@ -67,11 +78,23 @@ export class UserService {
     return this.geoRepository.save(user);
   }
 
-  findUserByUsername(username: string) {
-    return this.userRepository.findOneBy({ email_address: username });
+  async findUserByUsername(email_address: string): Promise<User> {
+    const foundUser = await this.userRepository.findOne({
+      where: {
+        email_address: email_address,
+      },
+    });
+
+    console.log('FOUND USER :: ', foundUser);
+
+    return foundUser;
   }
 
   findUserById(id: number) {
     return this.userRepository.findOneBy({ id: id });
+  }
+
+  updateUser(id: number, payload: any) {
+    return this.userRepository.update({ id }, { ...payload });
   }
 }

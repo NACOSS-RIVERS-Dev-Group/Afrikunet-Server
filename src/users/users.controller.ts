@@ -12,6 +12,7 @@ import { CreateUserDTO } from './dtos/createuser.dto';
 import { UserService } from './users.services';
 import { UserAddressDTO } from './dtos/createuseraddress.dto';
 import { UserGeoDTO } from './dtos/createusergeo.dto';
+import { LoginUserDTO } from './dtos/loginuser.dto';
 
 @Controller('users')
 export class UsersController {
@@ -24,6 +25,12 @@ export class UsersController {
   @UsePipes(new ValidationPipe())
   createUser(@Body() createUserDto: CreateUserDTO) {
     this.userService.createUser(createUserDto);
+  }
+
+  @Post('login')
+  @UsePipes(new ValidationPipe())
+  loginUser(@Body() loginUserDto: LoginUserDTO) {
+    this.userService.loginUser(loginUserDto);
   }
 
   @Post(':id/address')

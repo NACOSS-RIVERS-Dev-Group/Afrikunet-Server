@@ -1,4 +1,5 @@
 import {
+  IsAlpha,
   IsEmail,
   IsNotEmpty,
   IsPhoneNumber,
@@ -9,10 +10,12 @@ import {
 export class CreateUserDTO {
   @IsNotEmpty()
   @IsString()
+  @IsAlpha()
   first_name: string;
 
   @IsNotEmpty()
   @IsString()
+  @IsAlpha()
   last_name: string;
 
   @IsEmail()
@@ -26,4 +29,6 @@ export class CreateUserDTO {
   @IsNotEmpty()
   @IsPhoneNumber()
   international_phone_format: string;
+
+  user_id: string;
 }

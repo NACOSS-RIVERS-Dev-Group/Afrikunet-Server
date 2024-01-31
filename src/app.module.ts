@@ -6,6 +6,9 @@ import { UsersModule } from './users/users.module';
 import { Address } from './typeorm/entities/address';
 import { Geo } from './typeorm/entities/geo';
 import { AuthModule } from './auth/auth.module';
+import { MailModule } from './mail/mail.module';
+import { MailService } from './mail/mail.service';
+import { Otp } from './typeorm/entities/otp';
 
 @Module({
   imports: [
@@ -16,14 +19,15 @@ import { AuthModule } from './auth/auth.module';
       username: 'sql11680123',
       password: 'FapQLFQath',
       database: 'sql11680123',
-      entities: [User, Address, Geo],
+      entities: [User, Address, Geo, Otp],
       synchronize: true,
     }),
     UsersModule,
     VouchersModule,
     AuthModule,
+    MailModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [MailService],
 })
 export class AppModule {}

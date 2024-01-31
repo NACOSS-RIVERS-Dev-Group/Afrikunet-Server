@@ -17,6 +17,9 @@ export class User {
   })
   id: number;
 
+  @Column('uuid')
+  user_id: string;
+
   @Column()
   first_name: string;
 
@@ -38,7 +41,7 @@ export class User {
   @Column({ default: false })
   is_email_verified: boolean;
 
-  @Column({ nullable: true })
+  @Column({ unique: false })
   international_phone_format: string;
 
   @Column({ default: false })
